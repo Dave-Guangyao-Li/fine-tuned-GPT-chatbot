@@ -1,5 +1,5 @@
 import { Configuration, OpenAIApi } from 'openai'
-import { process } from './env'
+// import { process } from './env'
 
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
@@ -25,7 +25,7 @@ document.addEventListener('submit', (e) => {
     //     role: 'user',
     //     content: userInput.value
     // })
-    conversationStr += userInput.value + "\n"
+    conversationStr += ` ${userInput.value} ->` // need to explicitly add separator. -> indicate the end of the prompt
     fetchReply()
     const newSpeechBubble = document.createElement('div')
     newSpeechBubble.classList.add('speech', 'speech-human')
@@ -46,12 +46,13 @@ async function fetchReply() {
         prompt: conversationStr,
         presence_penalty: 0,
         frequency_penalty: 0.3,
-        max_tokens: 100
+        max_tokens: 100,
+        stop: ['\n', '->']
     })
     console.log(response.data)
     // conversationArr.push(response.data.choices[0].message)
     // renderTypewriterText(response.data.choices[0].message.content)
-    conversationStr += response.data.choices[0].text
+    conversationStr += ` ${response.data.choices[0].text} \n` // \n indicate the end of the response completion
     renderTypewriterText(response.data.choices[0].text)
 }
 
