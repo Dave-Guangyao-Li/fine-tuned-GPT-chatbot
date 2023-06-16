@@ -1,11 +1,11 @@
-import { Configuration, OpenAIApi } from 'openai'
-// import { process } from './env'
+// import { Configuration, OpenAIApi } from 'openai'
+// // import { process } from './env'
 
-const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-})
-delete configuration.baseOptions.headers['User-Agent'];
-const openai = new OpenAIApi(configuration)
+// const configuration = new Configuration({
+//     apiKey: process.env.OPENAI_API_KEY,
+// })
+// // delete configuration.baseOptions.headers['User-Agent'];
+// const openai = new OpenAIApi(configuration)
 
 const chatbotConversation = document.getElementById('chatbot-conversation')
 
@@ -39,21 +39,44 @@ document.addEventListener('submit', (e) => {
 
 
 
-
+// 1. Make a fetch request to the url using the 
+// following details. 
+// - The method should be 'POST'
+// - In the headers, the 'content-type' should 
+//   be 'text/plain'
+// - The body should hold conversationStr
+// 2. Save the response to a const and log it out. 
+// 3. Copy and paste the updated fetchReply function 
+// to VS Code and delete any unnecessary code from 
+// index.js
+// 4. Push the changes to GitHub to trigger a
+// redeploy.
+// 5. Navigate to your Netlify site, hit send 
+// and see what you get in the console. (You 
+// should see "Hello World" in an object).
 async function fetchReply() {
-    const response = await openai.createCompletion({
-        model: process.env.FINETUNED_MODEL,
-        prompt: conversationStr,
-        presence_penalty: 0,
-        frequency_penalty: 0.3,
-        max_tokens: 100,
-        stop: ['\n', '->']
+    const url = "https://magenta-naiad-ffe3de.netlify.app/.netlify/functions/fetchAI"; // serverless function url 
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'content-type': 'text/plain'
+        },
+        body: conversationStr
     })
-    console.log(response.data)
+    const data = await response.json() // convert the response to json
+    // const response = await openai.createCompletion({
+    //     model: "davinci:ft-dave-gy-li-2023-06-16-07-11-13",
+    //     prompt: conversationStr,
+    //     presence_penalty: 0,
+    //     frequency_penalty: 0.3,
+    //     max_tokens: 100,
+    //     stop: ['\n', '->']
+    // })
+    console.log(data)
     // conversationArr.push(response.data.choices[0].message)
     // renderTypewriterText(response.data.choices[0].message.content)
-    conversationStr += ` ${response.data.choices[0].text} \n` // \n indicate the end of the response completion
-    renderTypewriterText(response.data.choices[0].text)
+    // conversationStr += ` ${response.data.choices[0].text} \n` // \n indicate the end of the response completion
+    // renderTypewriterText(response.data.choices[0].text)
 }
 
 function renderTypewriterText(text) {
