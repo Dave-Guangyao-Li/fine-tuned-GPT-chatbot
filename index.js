@@ -4,7 +4,7 @@ import { process } from './env'
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 })
-
+delete configuration.baseOptions.headers['User-Agent'];
 const openai = new OpenAIApi(configuration)
 
 const chatbotConversation = document.getElementById('chatbot-conversation')
@@ -26,7 +26,7 @@ document.addEventListener('submit', (e) => {
     //     content: userInput.value
     // })
     conversationStr += userInput.value + "\n"
-    // fetchReply()
+    fetchReply()
     const newSpeechBubble = document.createElement('div')
     newSpeechBubble.classList.add('speech', 'speech-human')
     chatbotConversation.appendChild(newSpeechBubble)
@@ -35,15 +35,24 @@ document.addEventListener('submit', (e) => {
     chatbotConversation.scrollTop = chatbotConversation.scrollHeight
 })
 
+
+
+
+
+
 async function fetchReply() {
-    const response = await openai.createChatCompletion({
-        model: 'gpt-4',
-        messages: conversationArr,
+    const response = await openai.createCompletion({
+        model: process.env.FINETUNED_MODEL,
+        prompt: conversationStr,
         presence_penalty: 0,
-        frequency_penalty: 0.3
+        frequency_penalty: 0.3,
+        max_tokens: 100
     })
-    conversationArr.push(response.data.choices[0].message)
-    renderTypewriterText(response.data.choices[0].message.content)
+    console.log(response.data)
+    // conversationArr.push(response.data.choices[0].message)
+    // renderTypewriterText(response.data.choices[0].message.content)
+    conversationStr += response.data.choices[0].text
+    renderTypewriterText(response.data.choices[0].text)
 }
 
 function renderTypewriterText(text) {
