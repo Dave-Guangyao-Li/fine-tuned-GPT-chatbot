@@ -33,3 +33,12 @@
 ## Deployment
 
 - keep API key secret, send request to Netlify servless function who has access to API key in secure store, then send request to OpenAI API. otherwise API key will be exposed to the public by devtools under network tab in request header.
+- To install the Netlify cli
+  `npm install netlify-cli -g`
+
+- To initialise a netlify site
+  `netlify init`
+- create netlify serverless function
+  `netlify functions:create <function name>`
+- The url of your serverless function
+  https://<YOUR-SITE-URL>.netlify.app/.netlify/functions/fetchAI
