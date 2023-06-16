@@ -3,6 +3,17 @@
 - to avoid jibberish, Add the ' ->' separator to the end of our prompt as it is added to conversationStr.Add a whitespace before the prompt.
 - stop_sequence: to tell the model where the completion ends, it is an array, so we can add multiple stop sequences, the completion will not contain the stop sequence, usually use new line character as stop sequence. Add the newline character '\n' and separator '->' as a stop sequence.
 - about n_epochs: the number of epochs to train for, the more epochs the better the model will be, but it will take longer to train and more cost. 3-5 epochs is a good starting point. it defaults to 4. set epochs higher to avoid hallucination.
+- about cross domain request to serverless function
+
+```
+When making fetch requests from a browser, there are restrictions on cross-origin requests for security reasons. By default, browsers enforce the same-origin policy, which means that a fetch request can only be made to the same domain from which the code was served.
+
+In the case of serverless functions, the URL you see in the frontend code points to the serverless function hosted on a different domain or subdomain. Therefore, if the serverless function is properly configured, it should only accept requests from trusted sources, such as your frontend code or specific domains that you have allowed access to.
+
+By setting appropriate CORS (Cross-Origin Resource Sharing) headers on your serverless function, you can control which domains are allowed to make cross-origin requests to it. You can specify specific domains or use wildcard configurations to limit access.
+
+In summary, as long as you have properly configured CORS settings on your serverless function and only allowed trusted domains to make requests, potential abuse from unauthorized sources should be mitigated.
+```
 
 ## Data
 
