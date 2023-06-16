@@ -75,8 +75,8 @@ async function fetchReply() {
     console.log(data)
     // conversationArr.push(response.data.choices[0].message)
     // renderTypewriterText(response.data.choices[0].message.content)
-    // conversationStr += ` ${response.data.choices[0].text} \n` // \n indicate the end of the response completion
-    // renderTypewriterText(response.data.choices[0].text)
+    conversationStr += ` ${data.choices[0].text} \n` // \n indicate the end of the response completion
+    renderTypewriterText(data.choices[0].text)
 }
 
 function renderTypewriterText(text) {
